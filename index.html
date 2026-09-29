@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Placement Assistant - Manage your academic and professional profile for campus placements." />
+  <title>Placement Assistant</title>
+
+  <!-- Modern Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Embedded CSS Stylesheet -->
+  <style>
+    /* CSS Variables: Design tokens for colors, shadows, and transitions */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      --card-bg: rgba(30, 41, 59, 0.75);
+      --card-border: rgba(148, 163, 184, 0.15);
+      --input-bg: rgba(15, 23, 42, 0.65);
+      --input-border: rgba(148, 163, 184, 0.25);
+      --input-focus: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-glow: rgba(37, 99, 235, 0.35);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem 1rem;
+      line-height: 1.5;
+    }
+
+    /* Main Container Card */
+    .container {
+      width: 100%;
+      max-width: 860px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+      position: relative;
+    }
+
+    /* Header Section */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Notification Banner */
+    .toast {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .toast.success {
+      display: flex;
+      background: var(--success-bg);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    /* Section Headers inside the Form */
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      padding-bottom: 0.5rem;
+      margin: 1.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title:first-of-type {
+      margin-top: 0;
+    }
+
+    /* Form Layout Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem 1rem;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* Form Field Component */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+
+    .form-group .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Input & Textarea Elements */
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.85rem;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+      background-color: rgba(15, 23, 42, 0.9);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
+      padding-right: 2.25rem;
+    }
+
+    select option {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
+    /* Form Action Buttons */
+    .button-group {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.8rem 1.75rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--input-border);
+    }
+
+    .btn-secondary:hover {
+      color: var(--text-main);
+      border-color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-accent:active {
+      transform: translateY(1px);
+    }
+
+    /* Section Divider */
+    .section-divider {
+      margin: 2.5rem 0;
+      border: 0;
+      height: 1px;
+      background: rgba(148, 163, 184, 0.18);
+    }
+
+    /* Message Section & Textarea */
+    #placementMessage {
+      min-height: 150px;
+      line-height: 1.6;
+    }
+
+    .action-bar {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    /* Results Section & 3-Column Responsive Grid */
+    .results-section {
+      margin-top: 2rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    /* Result Card Component */
+    .result-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+      min-height: 200px;
+    }
+
+    .result-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .result-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      margin-bottom: 0.85rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .result-card-header svg {
+      color: #38bdf8;
+      flex-shrink: 0;
+    }
+
+    .result-card-body {
+      flex: 1;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    /* Initial Empty State */
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 120px;
+      color: #64748b;
+      font-style: italic;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    /* Card 1: Eligibility status badges & reason */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .status-badge.eligible {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.35);
+    }
+
+    .status-badge.not-eligible {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .status-badge.not-sure {
+      background: rgba(234, 179, 8, 0.15);
+      color: #facc15;
+      border: 1px solid rgba(234, 179, 8, 0.35);
+    }
+
+    .status-reason {
+      color: #cbd5e1;
+      font-size: 0.88rem;
+    }
+
+    /* Card 2: To-Do Checklist */
+    .todo-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding: 0;
+      margin: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      color: #cbd5e1;
+      font-size: 0.88rem;
+    }
+
+    .todo-item input[type="checkbox"] {
+      margin-top: 0.2rem;
+      accent-color: #38bdf8;
+      width: 1rem;
+      height: 1rem;
+      cursor: pointer;
+    }
+
+    /* Card 3: Deadlines List */
+    .deadline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .deadline-entry {
+      padding-bottom: 0.6rem;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.15);
+    }
+
+    .deadline-entry:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .deadline-title {
+      font-weight: 600;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .deadline-timestamp {
+      color: #38bdf8;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Chat Section */
+    .chat-section {
+      margin-top: 1rem;
+    }
+
+    .chat-header-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .chat-status-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 9999px;
+      padding: 0.2rem 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .chat-description {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .chat-messages {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      min-height: 180px;
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      scroll-behavior: smooth;
+    }
+
+    .chat-welcome {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-style: italic;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 0.85rem 1.15rem;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .chat-bubble.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .chat-bubble.bot {
+      align-self: flex-start;
+      background: rgba(30, 41, 59, 0.85);
+      color: #f1f5f9;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-bubble.thinking {
+      align-self: flex-start;
+      background: rgba(30, 41, 59, 0.6);
+      color: #94a3b8;
+      border: 1px dashed rgba(148, 163, 184, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-style: italic;
+    }
+
+    .chat-bubble.error {
+      align-self: flex-start;
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .thinking-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .thinking-dots span {
+      width: 6px;
+      height: 6px;
+      background: #38bdf8;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .thinking-dots span:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    .thinking-dots span:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0);
+      }
+      40% {
+        transform: scale(1);
+      }
+    }
+
+    .chat-input-bar {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .chat-input {
+      flex: 1;
+    }
+
+    .chat-send-btn {
+      flex-shrink: 0;
+      padding: 0.72rem 1.4rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 1.5rem 1.25rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
+        flex-direction: column-reverse;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .action-bar {
+        justify-content: stretch;
+      }
+
+      .action-bar .btn {
+        width: 100%;
+      }
+
+      .chat-input-bar {
+        flex-direction: column;
+      }
+
+      .chat-send-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Header Section -->
+    <header class="header">
+      <span class="badge">Placement Portal</span>
+      <h1>Placement Assistant</h1>
+      <p>Fill in your profile details to stay organized for upcoming campus drives</p>
+    </header>
+
+    <!-- Success / Info Notification -->
+    <div id="saveToast" class="toast" role="status" aria-live="polite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span>Profile saved to local storage!</span>
+    </div>
+
+    <!-- My Profile Form -->
+    <form id="profileForm" novalidate>
+
+      <!-- Academic & Personal Details -->
+      <h2 class="section-title">Personal & Academic Details</h2>
+      <div class="form-grid">
+        <!-- 1. Name -->
+        <div class="form-group">
+          <label for="fullName">1. Full Name</label>
+          <input type="text" id="fullName" name="fullName" placeholder="e.g. Alex Johnson" required />
+        </div>
+
+        <!-- 2. Degree -->
+        <div class="form-group">
+          <label for="degree">2. Degree</label>
+          <input type="text" id="degree" name="degree" placeholder="e.g. B.Tech / B.E." required />
+        </div>
+
+        <!-- 3. Branch -->
+        <div class="form-group">
+          <label for="branch">3. Branch / Department</label>
+          <input type="text" id="branch" name="branch" placeholder="e.g. Computer Science" required />
+        </div>
+
+        <!-- 4. Year of Passing -->
+        <div class="form-group">
+          <label for="passingYear">4. Year of Passing</label>
+          <input type="number" id="passingYear" name="passingYear" placeholder="e.g. 2026" min="1990" max="2100" />
+        </div>
+
+        <!-- 5. CGPA -->
+        <div class="form-group">
+          <label for="cgpa">5. CGPA</label>
+          <input type="number" id="cgpa" name="cgpa" placeholder="e.g. 8.75" step="0.01" min="0" max="10" />
+        </div>
+
+        <!-- 6. 10th Percentage -->
+        <div class="form-group">
+          <label for="tenthPercent">6. 10th Percentage (%)</label>
+          <input type="number" id="tenthPercent" name="tenthPercent" placeholder="e.g. 91.5" step="0.01" min="0"
+            max="100" />
+        </div>
+
+        <!-- 7. 12th Percentage -->
+        <div class="form-group">
+          <label for="twelfthPercent">7. 12th Percentage (%)</label>
+          <input type="number" id="twelfthPercent" name="twelfthPercent" placeholder="e.g. 88.0" step="0.01" min="0"
+            max="100" />
+        </div>
+
+        <!-- 8. Current Backlogs -->
+        <div class="form-group">
+          <label for="backlogs">8. Current Backlogs</label>
+          <input type="number" id="backlogs" name="backlogs" placeholder="0" min="0" />
+        </div>
+      </div>
+
+      <!-- Skills & Aptitude -->
+      <h2 class="section-title">Skills & Experience</h2>
+      <div class="form-grid">
+        <!-- 9. Programming Languages Known -->
+        <div class="form-group full-width">
+          <label for="programmingLanguages">9. Programming Languages Known <span class="hint">(comma
+              separated)</span></label>
+          <input type="text" id="programmingLanguages" name="programmingLanguages"
+            placeholder="e.g. Python, Java, C++, JavaScript" />
+        </div>
+
+        <!-- 10. Aptitude Level -->
+        <div class="form-group full-width">
+          <label for="aptitudeLevel">10. Aptitude Level</label>
+          <select id="aptitudeLevel" name="aptitudeLevel">
+            <option value="">-- Select Aptitude Level --</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Strong">Strong</option>
+          </select>
+        </div>
+
+        <!-- 11. Certifications -->
+        <div class="form-group full-width">
+          <label for="certifications">11. Certifications <span class="hint">(one per line)</span></label>
+          <textarea id="certifications" name="certifications" rows="3"
+            placeholder="AWS Certified Cloud Practitioner&#10;Meta Frontend Developer Certificate"></textarea>
+        </div>
+
+        <!-- 12. Internships -->
+        <div class="form-group full-width">
+          <label for="internships">12. Internships <span class="hint">(one per line: Company - Role -
+              Paid/Unpaid)</span></label>
+          <textarea id="internships" name="internships" rows="3"
+            placeholder="Acme Corp - SDE Intern - Paid&#10;TechLabs - AI Research Intern - Unpaid"></textarea>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="button-group">
+        <button type="button" id="clearBtn" class="btn btn-secondary">Clear Form</button>
+        <button type="submit" id="saveBtn" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          Save Profile
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Section Divider between Profile Form and Message Analysis -->
+    <hr class="section-divider" />
+
+    <!-- Section 1: Paste Placement Message -->
+    <section class="message-section" aria-labelledby="messageHeading">
+      <h2 id="messageHeading" class="section-title">Paste Placement Message</h2>
+      <div class="form-group">
+        <label for="placementMessage">Paste the job description or placement announcement:</label>
+        <textarea id="placementMessage" rows="6" placeholder="Paste placement message here... e.g., 'Google is hiring Software Engineer Interns. Eligibility: B.Tech CSE/IT, CGPA >= 7.5, no active backlogs. Deadline: Oct 5, 2026, 11:59 PM. Online assessment on Oct 8, 2026.'"></textarea>
+      </div>
+      <div class="action-bar">
+        <button type="button" id="checkEligibilityBtn" class="btn btn-accent">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          Check Eligibility
+        </button>
+      </div>
+    </section>
+
+    <!-- Section 2: Result Section with Three Cards -->
+    <section class="results-section" aria-labelledby="resultsHeading">
+      <h2 id="resultsHeading" class="section-title">Result</h2>
+      <div class="results-grid">
+        
+        <!-- Card 1: Eligibility (Shows Eligible / Not eligible / Not sure, with reason) -->
+        <article class="result-card" id="cardEligibility">
+          <div class="result-card-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Eligibility</span>
+          </div>
+          <div class="result-card-body" id="eligibilityBody">
+            <div class="empty-state">Card 1: Shows Eligible / Not eligible / Not sure, with reason.</div>
+          </div>
+        </article>
+
+        <!-- Card 2: To-Do List (Checklist of steps) -->
+        <article class="result-card" id="cardTodoList">
+          <div class="result-card-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"></path>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            <span>To-Do List</span>
+          </div>
+          <div class="result-card-body" id="todoBody">
+            <div class="empty-state">Card 2: Checklist of steps to prepare and apply.</div>
+          </div>
+        </article>
+
+        <!-- Card 3: Deadlines (List of dates and times) -->
+        <article class="result-card" id="cardDeadlines">
+          <div class="result-card-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Deadlines</span>
+          </div>
+          <div class="result-card-body" id="deadlinesBody">
+            <div class="empty-state">Card 3: List of important dates and times.</div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Section Divider between Results and AI Chat -->
+    <hr class="section-divider" />
+
+    <!-- Section 3: AI Chat Section (Google Gemini) -->
+    <section class="chat-section" aria-labelledby="chatHeading">
+      <div class="chat-header-wrap">
+        <h2 id="chatHeading" class="section-title" style="margin: 0; border: none; padding: 0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Chat with Placement Assistant
+        </h2>
+        <span class="chat-status-pill">Gemini Flash</span>
+      </div>
+      <p class="chat-description">
+        Ask questions about job descriptions, eligibility criteria, resume suggestions, or interview tips.
+      </p>
+
+      <!-- Chat Messages / Reply Display Box -->
+      <div id="chatMessages" class="chat-messages" role="log" aria-live="polite">
+        <div class="chat-welcome">
+          <p>👋 Hello! Type your question below to ask Google Gemini about placements, interview preparation, or company requirements.</p>
+        </div>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form id="chatForm" class="chat-input-bar">
+        <input 
+          type="text" 
+          id="chatInput" 
+          class="chat-input" 
+          placeholder="Ask a question... (e.g. How can I prepare for technical interviews with no prior experience?)" 
+          autocomplete="off" 
+          required 
+        />
+        <button type="submit" id="sendChatBtn" class="btn btn-primary chat-send-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+          <span>Send</span>
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Embedded JavaScript -->
+  <script>
+    // Storage key used to identify the saved profile data in browser localStorage
+    const STORAGE_KEY = 'placement_assistant_profile';
+
+    // List of form input field IDs to easily manage serialization and deserialization
+    const FIELD_IDS = [
+      'fullName',
+      'degree',
+      'branch',
+      'passingYear',
+      'cgpa',
+      'tenthPercent',
+      'twelfthPercent',
+      'backlogs',
+      'programmingLanguages',
+      'aptitudeLevel',
+      'certifications',
+      'internships'
+    ];
+
+    // Reference DOM elements
+    const profileForm = document.getElementById('profileForm');
+    const toast = document.getElementById('saveToast');
+    const clearBtn = document.getElementById('clearBtn');
+
+    /**
+     * Loads saved profile information from localStorage and populates the form inputs.
+     * Called automatically when the DOM content has loaded.
+     */
+    function loadProfile() {
+      try {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (!savedData) return;
+
+        const profile = JSON.parse(savedData);
+
+        // Populate each form element with its stored value
+        FIELD_IDS.forEach((id) => {
+          const element = document.getElementById(id);
+          if (element && profile[id] !== undefined) {
+            element.value = profile[id];
+          }
+        });
+      } catch (error) {
+        console.error('Error loading profile from localStorage:', error);
+      }
+    }
+
+    /**
+     * Gathers all field values, serializes them to JSON, and persists them into localStorage.
+     */
+    function saveProfile(event) {
+      // Prevent standard browser form submission / page reload
+      event.preventDefault();
+
+      // Collect data from each field
+      const profileData = {};
+      FIELD_IDS.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+          profileData[id] = element.value.trim();
+        }
+      });
+
+      try {
+        // Save to browser localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(profileData));
+        showToast('Profile saved successfully!');
+      } catch (error) {
+        console.error('Error saving profile to localStorage:', error);
+        alert('Failed to save profile. Storage might be full or restricted.');
+      }
+    }
+
+    /**
+     * Displays a temporary notification message on successful save.
+     */
+    let toastTimeout;
+    function showToast(message) {
+      toast.querySelector('span').textContent = message;
+      toast.classList.add('success');
+
+      // Clear any prior timer to prevent premature hide
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('success');
+      }, 3000);
+    }
+
+    // DOM elements for placement message & result cards
+    const checkEligibilityBtn = document.getElementById('checkEligibilityBtn');
+    const placementMessage = document.getElementById('placementMessage');
+    const eligibilityBody = document.getElementById('eligibilityBody');
+    const todoBody = document.getElementById('todoBody');
+    const deadlinesBody = document.getElementById('deadlinesBody');
+
+    /**
+     * Populates the 3 Result cards with clearly labelled sample data
+     * to preview and verify layout and formatting.
+     */
+    function displaySampleResults() {
+      // 1. Populate Card 1: Eligibility (Shows Eligible / Not eligible / Not sure, with the reason)
+      eligibilityBody.innerHTML = `
+        <div class="status-badge eligible">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Eligible
+        </div>
+        <p class="status-reason">
+          <strong>Sample Status:</strong> Eligible<br />
+          <strong>Reason:</strong> Your CGPA meets the requirement (&ge; 7.5), there are 0 active backlogs, and your degree/branch (Computer Science) is in the list of eligible disciplines for this drive.
+        </p>
+        <p style="margin-top: 0.6rem; font-size: 0.75rem; color: #64748b;">
+          (Note: Layout supports "Eligible", "Not eligible", or "Not sure" states)
+        </p>
+      `;
+
+      // 2. Populate Card 2: To-Do List (Checklist of steps)
+      todoBody.innerHTML = `
+        <ul class="todo-list">
+          <li class="todo-item">
+            <input type="checkbox" id="todo1" checked />
+            <label for="todo1"><strong>Step 1:</strong> Tailor resume with relevant tech stack (Python, C++)</label>
+          </li>
+          <li class="todo-item">
+            <input type="checkbox" id="todo2" />
+            <label for="todo2"><strong>Step 2:</strong> Submit application on company careers portal</label>
+          </li>
+          <li class="todo-item">
+            <input type="checkbox" id="todo3" />
+            <label for="todo3"><strong>Step 3:</strong> Revise Data Structures, Algorithms, and System Design</label>
+          </li>
+          <li class="todo-item">
+            <input type="checkbox" id="todo4" />
+            <label for="todo4"><strong>Step 4:</strong> Check webcam, mic, and IDE environment before test</label>
+          </li>
+        </ul>
+      `;
+
+      // 3. Populate Card 3: Deadlines (List of dates and times)
+      deadlinesBody.innerHTML = `
+        <div class="deadline-list">
+          <div class="deadline-entry">
+            <div class="deadline-title">Application Registration Deadline</div>
+            <div class="deadline-timestamp">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              October 5, 2026 &bull; 11:59 PM IST
+            </div>
+          </div>
+          <div class="deadline-entry">
+            <div class="deadline-title">Online Aptitude & Coding Assessment</div>
+            <div class="deadline-timestamp">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              October 8, 2026 &bull; 10:00 AM - 11:30 AM
+            </div>
+          </div>
+          <div class="deadline-entry">
+            <div class="deadline-title">Technical Interviews (Round 1)</div>
+            <div class="deadline-timestamp">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              October 12, 2026 &bull; 09:30 AM onwards
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // DOM elements for AI Chat section
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const sendChatBtn = document.getElementById('sendChatBtn');
+    const chatMessages = document.getElementById('chatMessages');
+
+    /**
+     * Appends a message bubble (user, bot, thinking, or error) to the chat area.
+     */
+    function appendChatBubble(text, type) {
+      // Remove welcome placeholder once the user sends their first message
+      const welcome = chatMessages.querySelector('.chat-welcome');
+      if (welcome) welcome.remove();
+
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble ${type}`;
+
+      if (type === 'thinking') {
+        bubble.id = 'thinkingBubble';
+        bubble.innerHTML = `
+          <span>Thinking...</span>
+          <div class="thinking-dots">
+            <span></span><span></span><span></span>
+          </div>
+        `;
+      } else {
+        bubble.textContent = text;
+      }
+
+      chatMessages.appendChild(bubble);
+      // Auto-scroll to the bottom of the chat box
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return bubble;
+    }
+
+    /**
+     * Sends the message to the Vercel serverless function /api/chat
+     * and renders the response from Google Gemini.
+     */
+    async function handleSendMessage(event) {
+      event.preventDefault();
+
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      // 1. Show the user's message in the chat
+      appendChatBubble(message, 'user');
+      chatInput.value = '';
+
+      // 2. Disable input and button while awaiting response
+      chatInput.disabled = true;
+      sendChatBtn.disabled = true;
+
+      // 3. Show "Thinking..." state
+      const thinkingBubble = appendChatBubble('', 'thinking');
+
+      try {
+        // 4. Send request to /api/chat Vercel serverless function
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await response.json();
+
+        // 5. Remove the "Thinking..." indicator
+        if (thinkingBubble && thinkingBubble.parentNode) {
+          thinkingBubble.remove();
+        }
+
+        // 6. Check for errors or display the AI reply
+        if (!response.ok) {
+          const errorMsg = data?.error || 'Failed to receive a response from Gemini.';
+          appendChatBubble(`⚠️ ${errorMsg}`, 'error');
+        } else if (data?.reply) {
+          appendChatBubble(data.reply, 'bot');
+        } else {
+          appendChatBubble('⚠️ Received an empty reply. Please try again.', 'error');
+        }
+      } catch (err) {
+        // Handle network failure (e.g. running file directly via file:// instead of web server)
+        if (thinkingBubble && thinkingBubble.parentNode) {
+          thinkingBubble.remove();
+        }
+        console.error('Chat error:', err);
+        appendChatBubble(
+          `⚠️ Network Error: Unable to call /api/chat (${err.message}). When deploying on Vercel or testing with 'vercel dev', this endpoint calls Google Gemini securely.`,
+          'error'
+        );
+      } finally {
+        // 7. Re-enable inputs for the next message
+        chatInput.disabled = false;
+        sendChatBtn.disabled = false;
+        chatInput.focus();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    }
+
+    /**
+     * Clears all fields and removes the stored entry from localStorage.
+     */
+    function handleClear() {
+      if (confirm('Are you sure you want to clear your saved profile?')) {
+        profileForm.reset();
+        localStorage.removeItem(STORAGE_KEY);
+        showToast('Profile cleared.');
+      }
+    }
+
+    // Initialize listeners once page is fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Reload saved profile data
+      loadProfile();
+
+      // 2. Attach form submission event
+      profileForm.addEventListener('submit', saveProfile);
+
+      // 3. Attach clear button handler
+      clearBtn.addEventListener('click', handleClear);
+
+      // 4. Attach Check Eligibility button handler to populate sample layout results
+      if (checkEligibilityBtn) {
+        checkEligibilityBtn.addEventListener('click', displaySampleResults);
+      }
+
+      // 5. Attach AI Chat submission event
+      if (chatForm) {
+        chatForm.addEventListener('submit', handleSendMessage);
+      }
+    });
+  </script>
+</body>
+
+</html>

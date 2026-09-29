@@ -1,0 +1,15 @@
+# Environment variables (keeps private API keys secret)
+.env
+.env.local
+.env.*.local
+
+# Node dependencies
+node_modules/
+
+# Vercel deployment artifacts & cache
+.vercel
+
+# System / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
