@@ -124,22 +124,6 @@
       border: 1px solid rgba(52, 211, 153, 0.3);
     }
 
-    .toast.error {
-      display: flex;
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.35);
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .animate-spin {
-      animation: spin 1s linear infinite;
-    }
-
     /* Section Headers inside the Form */
     .section-title {
       font-size: 1.05rem;
@@ -686,71 +670,101 @@
         stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
-      <span>Profile saved</span>
+      <span>Profile saved to local storage!</span>
     </div>
 
     <!-- My Profile Form -->
     <form id="profileForm" novalidate>
 
-      <h2 class="section-title">My Profile</h2>
+      <!-- Academic & Personal Details -->
+      <h2 class="section-title">Personal & Academic Details</h2>
       <div class="form-grid">
         <!-- 1. Name -->
         <div class="form-group">
-          <label for="fullName">Full Name</label>
+          <label for="fullName">1. Full Name</label>
           <input type="text" id="fullName" name="fullName" placeholder="e.g. Alex Johnson" required />
         </div>
 
-        <!-- 2. Branch / Department -->
+        <!-- 2. Degree -->
         <div class="form-group">
-          <label for="branch">Branch / Department</label>
-          <input type="text" id="branch" name="branch" placeholder="e.g. Computer Science and Engineering" required />
+          <label for="degree">2. Degree</label>
+          <input type="text" id="degree" name="degree" placeholder="e.g. B.Tech / B.E." required />
         </div>
 
-        <!-- 3. CGPA -->
+        <!-- 3. Branch -->
         <div class="form-group">
-          <label for="cgpa">CGPA</label>
-          <input type="number" id="cgpa" name="cgpa" placeholder="e.g. 8.45" step="0.01" min="0" max="10" required />
+          <label for="branch">3. Branch / Department</label>
+          <input type="text" id="branch" name="branch" placeholder="e.g. Computer Science" required />
         </div>
 
-        <!-- 4. Current Backlogs (number) -->
+        <!-- 4. Year of Passing -->
         <div class="form-group">
-          <label for="currentBacklogs">Current Backlogs</label>
-          <input type="number" id="currentBacklogs" name="currentBacklogs" placeholder="0" min="0" value="0" />
+          <label for="passingYear">4. Year of Passing</label>
+          <input type="number" id="passingYear" name="passingYear" placeholder="e.g. 2026" min="1990" max="2100" />
         </div>
 
-        <!-- 5. History of Backlogs (yes/no) -->
+        <!-- 5. CGPA -->
         <div class="form-group">
-          <label for="historyBacklogs">History of Backlogs</label>
-          <select id="historyBacklogs" name="historyBacklogs">
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
+          <label for="cgpa">5. CGPA</label>
+          <input type="number" id="cgpa" name="cgpa" placeholder="e.g. 8.75" step="0.01" min="0" max="10" />
         </div>
 
-        <!-- 6. 10th % -->
+        <!-- 6. 10th Percentage -->
         <div class="form-group">
-          <label for="tenthPercent">10th %</label>
+          <label for="tenthPercent">6. 10th Percentage (%)</label>
           <input type="number" id="tenthPercent" name="tenthPercent" placeholder="e.g. 91.5" step="0.01" min="0"
             max="100" />
         </div>
 
-        <!-- 7. 12th % -->
+        <!-- 7. 12th Percentage -->
         <div class="form-group">
-          <label for="twelfthPercent">12th %</label>
+          <label for="twelfthPercent">7. 12th Percentage (%)</label>
           <input type="number" id="twelfthPercent" name="twelfthPercent" placeholder="e.g. 88.0" step="0.01" min="0"
             max="100" />
         </div>
 
-        <!-- 8. Graduation Year -->
+        <!-- 8. Current Backlogs -->
         <div class="form-group">
-          <label for="graduationYear">Graduation Year</label>
-          <input type="number" id="graduationYear" name="graduationYear" placeholder="e.g. 2026" min="2000" max="2100" />
+          <label for="backlogs">8. Current Backlogs</label>
+          <input type="number" id="backlogs" name="backlogs" placeholder="0" min="0" />
+        </div>
+      </div>
+
+      <!-- Skills & Aptitude -->
+      <h2 class="section-title">Skills & Experience</h2>
+      <div class="form-grid">
+        <!-- 9. Programming Languages Known -->
+        <div class="form-group full-width">
+          <label for="programmingLanguages">9. Programming Languages Known <span class="hint">(comma
+              separated)</span></label>
+          <input type="text" id="programmingLanguages" name="programmingLanguages"
+            placeholder="e.g. Python, Java, C++, JavaScript" />
         </div>
 
-        <!-- 9. Skills (comma separated) -->
+        <!-- 10. Aptitude Level -->
         <div class="form-group full-width">
-          <label for="skills">Skills <span class="hint">(comma separated)</span></label>
-          <input type="text" id="skills" name="skills" placeholder="e.g. Python, Java, SQL, React, Data Structures, Git" />
+          <label for="aptitudeLevel">10. Aptitude Level</label>
+          <select id="aptitudeLevel" name="aptitudeLevel">
+            <option value="">-- Select Aptitude Level --</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Strong">Strong</option>
+          </select>
+        </div>
+
+        <!-- 11. Certifications -->
+        <div class="form-group full-width">
+          <label for="certifications">11. Certifications <span class="hint">(one per line)</span></label>
+          <textarea id="certifications" name="certifications" rows="3"
+            placeholder="AWS Certified Cloud Practitioner&#10;Meta Frontend Developer Certificate"></textarea>
+        </div>
+
+        <!-- 12. Internships -->
+        <div class="form-group full-width">
+          <label for="internships">12. Internships <span class="hint">(one per line: Company - Role -
+              Paid/Unpaid)</span></label>
+          <textarea id="internships" name="internships" rows="3"
+            placeholder="Acme Corp - SDE Intern - Paid&#10;TechLabs - AI Research Intern - Unpaid"></textarea>
         </div>
       </div>
 
